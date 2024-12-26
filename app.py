@@ -5,13 +5,11 @@ from databases.bus_dao import BusDAO
 from databases.reservation_dao import ReservationDAO
 from io import BytesIO
 from flask import send_file
+from src import create_app
 import qrcode
 from trie import Trie
 
-app = Flask(__name__)
-app.secret_key = 'your_secret_key'  # Change this to a random secret key
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///bus_reservation.db'  # Change to your database
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app = create_app()
 
 trie = Trie()
 
