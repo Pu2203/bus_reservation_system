@@ -32,6 +32,8 @@ class BusDAO:
         
         conn.close()
         return buses
+    
+
 
     @staticmethod
     def get_bus(bus_id):
