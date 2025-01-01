@@ -40,6 +40,9 @@ def login():
         if user and UserDAO.check_password(user.password_hash, password):
             login_user(user)
             flash('Login successful!')
+            next_page = request.args.get('next')
+            if next_page:
+                return redirect(next_page)
             return redirect(url_for('view.home'))  # Redirect to a home page or dashboard
         else:
             flash('Invalid username or password.')
