@@ -1,5 +1,6 @@
 import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
+from website.models import User
 
 class UserDAO:
     @staticmethod
@@ -23,10 +24,22 @@ class UserDAO:
         cursor = conn.cursor()
         
         cursor.execute('SELECT * FROM users WHERE username = ?', (username,))
-        user = cursor.fetchone()
+        user_data = cursor.fetchone()
         
         conn.close()
-        return user
+        
+        if user_data:
+            return User(
+                id=user_data[0],
+                username=user_data[1],
+                password_hash=user_data[2],
+                email=user_data[3],
+                phone_number=user_data[4],
+                gender=user_data[5],
+                balance=user_data[6],
+                name=user_data[7]
+            )
+        return None
 
     @staticmethod
     def get_user_by_id(user_id):
@@ -34,10 +47,22 @@ class UserDAO:
         cursor = conn.cursor()
         
         cursor.execute('SELECT * FROM users WHERE id = ?', (user_id,))
-        user = cursor.fetchone()
+        user_data = cursor.fetchone()
         
         conn.close()
-        return user
+        
+        if user_data:
+            return User(
+                id=user_data[0],
+                username=user_data[1],
+                password_hash=user_data[2],
+                email=user_data[3],
+                phone_number=user_data[4],
+                gender=user_data[5],
+                balance=user_data[6],
+                name=user_data[7]
+            )
+        return None
 
     @staticmethod
     def check_password(stored_password_hash, password):
@@ -77,9 +102,22 @@ class UserDAO:
         cursor = conn.cursor()
         
         cursor.execute('SELECT id, username, phone_number, balance FROM users')
-        users = cursor.fetchall()
+        users_data = cursor.fetchall()
         
         conn.close()
+        
+        users = []
+        for user_data in users_data:
+            users.append(User(
+                id=user_data[0],
+                username=user_data[1],
+                password_hash=None,  # Password hash is not selected in the query
+                email=None,  # Email is not selected in the query
+                phone_number=user_data[2],
+                gender=None,  # Gender is not selected in the query
+                balance=user_data[3],
+                name=None  # Name is not selected in the query
+            ))
         return users
 
     @staticmethod

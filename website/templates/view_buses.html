@@ -1,0 +1,38 @@
+<!-- filepath: /D:/Code/bus_reservation_system/website/templates/view_buses.html -->
+{% extends "base.html" %}
+
+{% block title %}View Buses{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Available Buses</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Bus Number</th>
+                <th>Route</th>
+                <th>Total Seats</th>
+                <th>Available Seats</th>
+                <th>Time</th>
+                <th>Price</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for bus in buses %}
+            <tr>
+                <td>{{ bus.bus_number }}</td>
+                <td>{{ bus.route }}</td>
+                <td>{{ bus.total_seats }}</td>
+                <td>{{ bus.available_seats }}</td>
+                <td>{{ bus.time }}</td>
+                <td>{{ bus.price }}</td>
+                <td>
+                    <a href="{{ url_for('view.buy_ticket', bus_id=bus.id) }}" class="button">Buy Ticket</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

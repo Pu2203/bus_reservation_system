@@ -1,3 +1,4 @@
+<!-- filepath: /D:/Code/bus_reservation_system/website/templates/manage_accounts.html -->
 {% extends "base.html" %}
 
 {% block title %}Manage Accounts{% endblock %}
@@ -8,7 +9,6 @@
     <table>
         <thead>
             <tr>
-                <th>ID</th>
                 <th>Username</th>
                 <th>Phone Number</th>
                 <th>Balance</th>
@@ -18,19 +18,18 @@
         <tbody>
             {% for user in users %}
             <tr>
-                <td>{{ user[0] }}</td>
-                <td>{{ user[1] }}</td>
-                <td>{{ user[2] }}</td>
-                <td>{{ user[3] }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.phone_number }}</td>
+                <td>{{ user.balance }}</td>
                 <td>
-                    <form action="{{ url_for('manage_accounts') }}" method="POST" style="display:inline;">
-                        <input type="hidden" name="user_id" value="{{ user[0] }}">
+                    <form action="{{ url_for('admin.manage_accounts') }}" method="POST" style="display:inline;">
+                        <input type="hidden" name="user_id" value="{{ user.id }}">
                         <input type="hidden" name="action" value="update_balance">
                         <input type="number" name="amount" placeholder="Amount" required>
                         <button type="submit">Update Balance</button>
                     </form>
-                    <form action="{{ url_for('manage_accounts') }}" method="POST" style="display:inline;">
-                        <input type="hidden" name="user_id" value="{{ user[0] }}">
+                    <form action="{{ url_for('admin.manage_accounts') }}" method="POST" style="display:inline;">
+                        <input type="hidden" name="user_id" value="{{ user.id }}">
                         <input type="hidden" name="action" value="update_password">
                         <input type="password" name="new_password" placeholder="New Password" required>
                         <button type="submit">Update Password</button>
@@ -40,6 +39,5 @@
             {% endfor %}
         </tbody>
     </table>
-    <a href="{{ url_for('home') }}">Back to Home</a>
 </div>
 {% endblock %}

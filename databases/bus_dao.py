@@ -1,4 +1,5 @@
 import sqlite3
+from website.models import Bus
 
 class BusDAO:
     @staticmethod
@@ -28,12 +29,22 @@ class BusDAO:
             query += f' ORDER BY {sort_by}'
         
         cursor.execute(query, params)
-        buses = cursor.fetchall()
+        buses_data = cursor.fetchall()
         
         conn.close()
+        
+        buses = []
+        for bus_data in buses_data:
+            buses.append(Bus(
+                id=bus_data[0],
+                bus_number=bus_data[1],
+                route=bus_data[2],
+                total_seats=bus_data[3],
+                available_seats=bus_data[4],
+                time=bus_data[5],
+                price=bus_data[6]
+            ))
         return buses
-    
-
 
     @staticmethod
     def get_bus(bus_id):
@@ -41,10 +52,21 @@ class BusDAO:
         cursor = conn.cursor()
         
         cursor.execute('SELECT * FROM buses WHERE id = ?', (bus_id,))
-        bus = cursor.fetchone()
+        bus_data = cursor.fetchone()
         
         conn.close()
-        return bus
+        
+        if bus_data:
+            return Bus(
+                id=bus_data[0],
+                bus_number=bus_data[1],
+                route=bus_data[2],
+                total_seats=bus_data[3],
+                available_seats=bus_data[4],
+                time=bus_data[5],
+                price=bus_data[6]
+            )
+        return None
 
     @staticmethod
     def update_bus(bus_id, bus_number, route, total_seats, available_seats, time, price):
@@ -75,18 +97,11 @@ class BusDAO:
         conn = sqlite3.connect('bus_reservation.db')
         cursor = conn.cursor()
         
-        cursor.execute('SELECT available_seats FROM buses WHERE id = ?', (bus_id,))
-        available_seats = cursor.fetchone()[0]
+        cursor.execute('''
+            UPDATE buses
+            SET available_seats = available_seats + ?
+            WHERE id = ?
+        ''', (seats_to_reverse, bus_id))
         
-        if available_seats - seats_to_reverse >= 0:
-            cursor.execute('''
-                UPDATE buses SET available_seats = available_seats + ?
-                WHERE id = ?
-            ''', (seats_to_reverse, bus_id))
-            
-            conn.commit()
-            print("Seats reversed successfully!")
-        else:
-            print("Not enough available seats to reverse!")
-        
+        conn.commit()
         conn.close()

@@ -35,12 +35,12 @@
                     {% endif %}
                 </td>
                 <td>
-                    <img src="{{ url_for('generate_qr_code', bus_id=reservation[0], customer_name=reservation[3], seats_reserved=reservation[4]) }}" alt="QR Code" width="100" height="100">
+                    <img src="{{ url_for('view.generate_qr_code', bus_id=reservation[0], customer_name=reservation[3], seats_reserved=reservation[4]) }}" alt="QR Code" width="100" height="100">
                 </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
-    <a href="{{ url_for('home') }}">Back to Home</a>
+    <a href="{{ url_for('view.home') }}">Back to Home</a>
 </div>
 {% endblock %}

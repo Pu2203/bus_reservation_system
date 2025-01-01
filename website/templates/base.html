@@ -1,0 +1,43 @@
+<!-- filepath: /D:/Code/bus_reservation_system/website/templates/base.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Bus Reservation System{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="header">
+        <a href="{{ url_for('view.index') }}">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="logo">
+        </a>
+        <div class="header-content">
+            <div class="welcome-message">
+                {% if current_user.is_authenticated %}
+                    <p>Welcome {{ current_user.username }}!</p>
+                    <p>Balance: ${{ current_user.balance }}</p>
+                {% else %}
+                    <p><strong>Welcome to the Bus Reservation System</strong></p>
+                {% endif %}
+            </div>
+            <div class="button-container">
+                <a href="{{ url_for('view.view_buses_route') }}" class="button">View Buses</a>
+                {% if current_user.is_authenticated and current_user.username == 'admin' %}
+                <a href="{{ url_for('admin.add_bus_route') }}" class="button">Add Bus</a>
+                <a href="{{ url_for('admin.manage_accounts') }}" class="button">Manage Accounts</a>
+                {% endif %}
+                <a href="{{ url_for('view.my_tickets') }}" class="button">My Tickets</a>
+                <a href="{{ url_for('view.profile') }}" class="button">Profile</a>
+                {% if current_user.is_authenticated %}
+                    <a href="{{ url_for('auth.logout') }}" class="button">Logout</a>
+                {% else %}
+                    <a href="{{ url_for('auth.login') }}" class="button">Login</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

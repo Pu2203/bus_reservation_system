@@ -1,0 +1,38 @@
+<!-- filepath: /D:/Code/bus_reservation_system/website/templates/add_bus.html -->
+{% extends "base.html" %}
+
+{% block title %}Add Bus{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Add Bus</h1>
+    <form action="{{ url_for('admin.add_bus_route') }}" method="POST">
+        <label for="bus_number">Bus Number:</label>
+        <input type="text" id="bus_number" name="bus_number" required>
+        
+        <label for="route">Route:</label>
+        <input type="text" id="route" name="route" required>
+        
+        <label for="total_seats">Total Seats:</label>
+        <input type="number" id="total_seats" name="total_seats" required>
+        
+        <label for="time">Time:</label>
+        <input type="text" id="time" name="time" required>
+        
+        <label for="price">Price:</label>
+        <input type="number" id="price" name="price" required>
+        
+        <button type="submit">Add Bus</button>
+    </form>
+    <a href="{{ url_for('view.view_buses_route') }}">Back to Buses</a>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+</div>
+{% endblock %}
