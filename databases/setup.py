@@ -6,7 +6,7 @@ def setup_database():
     
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY,
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             username TEXT NOT NULL UNIQUE,
             password_hash TEXT NOT NULL,
             email TEXT,
@@ -31,7 +31,7 @@ def setup_database():
     
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS reservations (
-            id INTEGER PRIMARY KEY,
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             bus_id INTEGER,
             customer_name TEXT NOT NULL,
             seats_reserved INTEGER NOT NULL,

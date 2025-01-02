@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from flask_login import LoginManager
 from databases.user_dao import UserDAO
 from databases.bus_dao import BusDAO
@@ -14,6 +14,10 @@ def create_app():
     login_manager = LoginManager()
     login_manager.init_app(app)
 
+    @app.errorhandler(404)
+    def page_not_found(error):
+        return render_template('404.html')
+    
     @login_manager.user_loader
     def load_user(user_id):
         return UserDAO.get_user_by_id(user_id)

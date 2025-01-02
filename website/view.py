@@ -35,9 +35,11 @@ def is_admin(user_id):
 def index():
     user_id = session.get('user_id')
     user = None
+    balance = None
     if user_id:
         user = UserDAO.get_user_by_id(user_id)
-    return render_template('index.html', user=user)
+        balance = user.balance
+    return render_template('index.html', user=user, balance=balance)
 
 # Home route (after login)
 @view_bp.route('/home')
@@ -71,6 +73,7 @@ def view_buses_route():
     search_query = request.form.get('search_query')
     
     buses = BusDAO.view_buses(sort_by=sort_by, search_query=search_query)
+    buses = [bus for bus in buses if bus.available_seats > 0]
     balance = user.balance
     return render_template('view_buses.html', buses=buses, user=user, balance=balance)
 
@@ -90,7 +93,7 @@ def view_reservations_route():
     
     is_admin = user.username == 'admin'
     
-    reservations = ReservationDAO.view_reservations(user_id, is_admin)
+    reservations = ReservationDAO.view_reservations(user.username, is_admin)
     return render_template('view_reservations.html', reservations=reservations, is_admin=is_admin, user=user)
 
 # Route for reversing seats
@@ -114,7 +117,7 @@ def buy_ticket(bus_id):
         flash('You need to log in to buy a ticket.')
         return redirect(url_for('auth.login'))
     
-    user = UserDAO.get_user_by_id(user_id)
+    user = UserDAO.get_user_by_id(current_user.id)
     if user is None:
         flash('User not found.')
         return redirect(url_for('auth.login'))
@@ -125,7 +128,7 @@ def buy_ticket(bus_id):
         return redirect(url_for('view.view_buses_route'))
     
     if request.method == 'POST':
-        customer_name = request.form['customer_name']
+        customer_name = user.username  # Use the username instead of customer_name from the form
         seats_reserved = int(request.form['seats_reserved'])
         plan = request.form['plan']
         
@@ -139,7 +142,9 @@ def buy_ticket(bus_id):
             return redirect(url_for('view.buy_ticket', bus_id=bus_id))
         
         if ReservationDAO.make_reservation(bus_id, customer_name, seats_reserved, plan):
-            UserDAO.update_balance(user_id, -total_price)  # Reduce the user's balance
+            UserDAO.update_balance(current_user.id, -total_price)  # Reduce the user's balance
+            user = UserDAO.get_user_by_id(user_id)
+            flash('Ticket purchased successfully!')
             # Generate QR code
             qr_data = f"Bus ID: {bus_id}, Customer: {customer_name}, Seats: {seats_reserved}, Plan: {plan}"
             qr = qrcode.make(qr_data)
@@ -147,7 +152,8 @@ def buy_ticket(bus_id):
             qr.save(buffer, 'PNG')
             buffer.seek(0)
             
-            return send_file(buffer, mimetype='image/png', as_attachment=True, download_name='ticket_qr.png')
+            return redirect(url_for('view.my_tickets'))
+        #send_file(buffer, mimetype='image/png', as_attachment=True, download_name='ticket_qr.png')
         else:
             flash('Not enough available seats!')
             return redirect(url_for('view.buy_ticket', bus_id=bus_id))
@@ -172,12 +178,12 @@ def my_tickets():
     if not user_id:
         flash('You need to log in to view your tickets.')
         return redirect(url_for('auth.login'))
-    user = UserDAO.get_user_by_id(user_id)
+    user = UserDAO.get_user_by_id(current_user.id)
     if user is None:
         flash('User not found.')
         return redirect(url_for('auth.login'))
     is_admin = user.username == 'admin'
-    reservations = ReservationDAO.view_reservations(user_id, is_admin)
+    reservations = ReservationDAO.view_reservations(user.username, is_admin)
     return render_template('my_tickets.html', reservations=reservations, is_admin=is_admin, user=user)
 
 # Route for viewing and editing user profile
