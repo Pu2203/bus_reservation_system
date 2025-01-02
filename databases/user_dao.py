@@ -101,7 +101,7 @@ class UserDAO:
         conn = sqlite3.connect('bus_reservation.db')
         cursor = conn.cursor()
         
-        cursor.execute('SELECT id, username, phone_number, balance FROM users')
+        cursor.execute('SELECT id, username, name, phone_number, balance FROM users')
         users_data = cursor.fetchall()
         
         conn.close()
@@ -113,10 +113,10 @@ class UserDAO:
                 username=user_data[1],
                 password_hash=None,  # Password hash is not selected in the query
                 email=None,  # Email is not selected in the query
-                phone_number=user_data[2],
+                phone_number=user_data[3],
                 gender=None,  # Gender is not selected in the query
-                balance=user_data[3],
-                name=None  # Name is not selected in the query
+                balance=user_data[4],
+                name=user_data[2]  # Name is not selected in the query
             ))
         return users
 

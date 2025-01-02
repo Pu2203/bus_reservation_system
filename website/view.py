@@ -77,25 +77,6 @@ def view_buses_route():
     balance = user.balance
     return render_template('view_buses.html', buses=buses, user=user, balance=balance)
 
-# Route for viewing reservations
-@view_bp.route('/view_reservations')
-@login_required
-def view_reservations_route():
-    user_id = session.get('user_id')
-    if not user_id:
-        flash('You need to log in to view reservations.')
-        return redirect(url_for('auth.login'))
-    
-    user = UserDAO.get_user_by_id(user_id)
-    if user is None:
-        flash('User not found.')
-        return redirect(url_for('auth.login'))
-    
-    is_admin = user.username == 'admin'
-    
-    reservations = ReservationDAO.view_reservations(user.username, is_admin)
-    return render_template('view_reservations.html', reservations=reservations, is_admin=is_admin, user=user)
-
 # Route for reversing seats
 @view_bp.route('/reverse_seats/<int:bus_id>/<int:seats_to_reverse>')
 @login_required
@@ -183,8 +164,8 @@ def my_tickets():
         flash('User not found.')
         return redirect(url_for('auth.login'))
     is_admin = user.username == 'admin'
-    reservations = ReservationDAO.view_reservations(user.username, is_admin)
-    return render_template('my_tickets.html', reservations=reservations, is_admin=is_admin, user=user)
+    tickets = ReservationDAO.view_user_tickets(user.username, is_admin)
+    return render_template('my_tickets.html', tickets=tickets, is_admin=is_admin, user=user)
 
 # Route for viewing and editing user profile
 @view_bp.route('/profile', methods=['GET', 'POST'])

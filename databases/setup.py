@@ -30,12 +30,13 @@ def setup_database():
     ''')
     
     cursor.execute('''
-        CREATE TABLE IF NOT EXISTS reservations (
+        CREATE TABLE IF NOT EXISTS tickets (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             bus_id INTEGER,
             customer_name TEXT NOT NULL,
             seats_reserved INTEGER NOT NULL,
             plan TEXT NOT NULL,
+            status TEXT NOT NULL DEFAULT 'Pending',
             FOREIGN KEY (bus_id) REFERENCES buses (id)
         )
     ''')

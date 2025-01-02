@@ -3,14 +3,16 @@ from flask_login import LoginManager
 from databases.user_dao import UserDAO
 from databases.bus_dao import BusDAO
 from databases.reservation_dao import ReservationDAO
-
+from databases.setup import setup_database
 
 def create_app():
     app = Flask(__name__)
     app.secret_key = 'your_secret_key'  # Change this to a random secret key
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///bus_reservation.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
+    
+    setup_database()
+    
     login_manager = LoginManager()
     login_manager.init_app(app)
 

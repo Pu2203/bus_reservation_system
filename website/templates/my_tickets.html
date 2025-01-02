@@ -1,3 +1,4 @@
+<!-- filepath: /D:/Code/bus_reservation_system/website/templates/my_tickets.html -->
 {% extends "base.html" %}
 
 {% block title %}My Tickets{% endblock %}
@@ -15,32 +16,47 @@
                 <th>Seats Reserved</th>
                 <th>Time</th>
                 <th>Total Price</th>
+                <th>Status</th>
                 <th>QR Code</th>
                 <th>Download</th>
+                {% if current_user.username == 'admin' %}
+                <th>Actions</th>
+                {% endif %}
             </tr>
         </thead>
         <tbody>
-            {% for reservation in reservations %}
+            {% for ticket in tickets %}
             <tr>
-                <td>{{ reservation[0] }}</td>
-                <td>{{ reservation[1] }}</td>
-                <td>{{ reservation[2] }}</td>
-                <td>{{ reservation[3] }}</td>
-                <td>{{ reservation[4] }}</td>
-                <td>{{ reservation[5] }}</td>
+                <td>{{ ticket[0] }}</td>
+                <td>{{ ticket[1] }}</td>
+                <td>{{ ticket[2] }}</td>
+                <td>{{ ticket[3] }}</td>
+                <td>{{ ticket[4] }}</td>
+                <td>{{ ticket[5] }}</td>
                 <td>
-                    {% if reservation[7] == 'block' %}
+                    {% if ticket[7] == 'block' %}
                         $150
                     {% else %}
-                        ${{ reservation[4] * reservation[6] }}
+                        ${{ ticket[4] * ticket[6] }}
                     {% endif %}
                 </td>
+                <td>{{ ticket[8] }}</td>
                 <td>
-                    <img src="{{ url_for('view.generate_qr_code', bus_id=reservation[0], customer_name=reservation[3], seats_reserved=reservation[4]) }}" alt="QR Code" width="100" height="100">
+                    <img src="{{ url_for('view.generate_qr_code', bus_id=ticket[0], customer_name=ticket[3], seats_reserved=ticket[4]) }}" alt="QR Code" width="100" height="100">
                 </td>
                 <td>
-                <a href="{{ url_for('view.generate_qr_code', bus_id=reservation[0], customer_name=reservation[3], seats_reserved=reservation[4]) }}" download="ticket_qr.png" class="button">Download QR</a>
+                    <a href="{{ url_for('view.generate_qr_code', bus_id=ticket[0], customer_name=ticket[3], seats_reserved=ticket[4]) }}" download="ticket_qr.png" class="button">Download QR</a>
                 </td>
+                {% if current_user.username == 'admin' %}
+                <td>
+                    <form action="{{ url_for('admin.remove_ticket', ticket_id=ticket[0]) }}" method="POST" style="display:inline;">
+                        <button type="submit" class="button delete-button">Remove Ticket</button>
+                    </form>
+                    <form action="{{ url_for('admin.update_ticket_status', ticket_id=ticket[0]) }}" method="POST" style="display:inline;">
+                        <button type="submit" class="button">Scan the Ticket</button>
+                    </form>
+                </td>
+                {% endif %}
             </tr>
             {% endfor %}
         </tbody>

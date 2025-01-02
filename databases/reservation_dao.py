@@ -14,8 +14,8 @@ class ReservationDAO:
             return False
         
         cursor.execute('''
-            INSERT INTO reservations (bus_id, customer_name, seats_reserved, plan)
-            VALUES (?, ?, ?, ?)
+            INSERT INTO tickets (bus_id, customer_name, seats_reserved, plan, status)
+            VALUES (?, ?, ?, ?, 'Pending')
         ''', (bus_id, customer_name, seats_reserved, plan))
         
         cursor.execute('''
@@ -32,41 +32,45 @@ class ReservationDAO:
         return True
 
     @staticmethod
-    def view_reservations(username, is_admin):
+    def view_user_tickets(username, is_admin):
         conn = sqlite3.connect('bus_reservation.db')
         cursor = conn.cursor()
         
         if is_admin:
             cursor.execute('''
-                SELECT reservations.id, buses.bus_number, buses.route, reservations.customer_name, reservations.seats_reserved, buses.time, buses.price, reservations.plan
-                FROM reservations
-                JOIN buses ON reservations.bus_id = buses.id
+                SELECT tickets.id, buses.bus_number, buses.route, tickets.customer_name, tickets.seats_reserved, buses.time, buses.price, tickets.plan, tickets.status
+                FROM tickets
+                JOIN buses ON tickets.bus_id = buses.id
             ''')
         else:
             cursor.execute('''
-                SELECT reservations.id, buses.bus_number, buses.route, reservations.customer_name, reservations.seats_reserved, buses.time, buses.price, reservations.plan
-                FROM reservations
-                JOIN buses ON reservations.bus_id = buses.id
-                WHERE reservations.customer_name = ?
+                SELECT tickets.id, buses.bus_number, buses.route, tickets.customer_name, tickets.seats_reserved, buses.time, buses.price, tickets.plan, tickets.status
+                FROM tickets
+                JOIN buses ON tickets.bus_id = buses.id
+                WHERE tickets.customer_name = ?
             ''', (username,))
         
-        reservations = cursor.fetchall()
-        
-        conn.close()
-        return reservations
-
-    @staticmethod
-    def view_user_tickets(username):
-        conn = sqlite3.connect('bus_reservation.db')
-        cursor = conn.cursor()
-        
-        cursor.execute('''
-            SELECT buses.id, buses.route, reservations.seats_reserved, reservations.customer_name
-            FROM reservations
-            JOIN buses ON reservations.bus_id = buses.id
-            WHERE reservations.customer_name = ?
-        ''', (username,))
         tickets = cursor.fetchall()
         
         conn.close()
         return tickets
+    
+    @staticmethod
+    def remove_ticket(ticket_id):
+        conn = sqlite3.connect('bus_reservation.db')
+        cursor = conn.cursor()
+        
+        cursor.execute('DELETE FROM tickets WHERE id = ?', (ticket_id,))
+        
+        conn.commit()
+        conn.close()
+
+    @staticmethod
+    def update_ticket_status(ticket_id, status):
+        conn = sqlite3.connect('bus_reservation.db')
+        cursor = conn.cursor()
+        
+        cursor.execute('UPDATE tickets SET status = ? WHERE id = ?', (status, ticket_id))
+        
+        conn.commit()
+        conn.close()

@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from databases.user_dao import UserDAO
 from databases.bus_dao import BusDAO
+from databases.reservation_dao import ReservationDAO
 from flask_login import login_required
 
 admin = Blueprint('admin', __name__)
@@ -79,3 +80,19 @@ def manage_accounts():
         return redirect(url_for('admin.manage_accounts'))
     users = UserDAO.get_all_users()
     return render_template('manage_accounts.html', users=users)
+
+# Route for removing a ticket
+@admin.route('/remove_ticket/<int:ticket_id>', methods=['POST'])
+@login_required
+def remove_ticket(ticket_id):
+    ReservationDAO.remove_ticket(ticket_id)
+    flash('Ticket removed successfully!')
+    return redirect(url_for('view.my_tickets'))
+
+# Route for updating ticket status
+@admin.route('/update_ticket_status/<int:ticket_id>', methods=['POST'])
+@login_required
+def update_ticket_status(ticket_id):
+    ReservationDAO.update_ticket_status(ticket_id, 'Scanned')
+    flash('Ticket status updated to Scanned!')
+    return redirect(url_for('view.my_tickets'))

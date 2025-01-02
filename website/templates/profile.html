@@ -12,6 +12,7 @@
     <p>Gender: {{ user.gender }}</p>
     <p>Balance: ${{ user.balance }}</p>
     <p>User ID: {{ user.id }}</p>
+    <p>Name: {{ user.name }}</p>
     <form action="{{ url_for('view.profile') }}" method="POST">
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" value="{{ user.username }}" required>
