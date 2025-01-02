@@ -1,6 +1,9 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import UserMixin
+
 class User(UserMixin):
     def __init__(self, id, username, password_hash, email=None, phone_number=None, gender=None, balance=0.0, name=None):
         self.id = id
@@ -33,6 +36,8 @@ class User(UserMixin):
     def get_id(self):
         return str(self.id)
 
+    def __str__(self):
+        return f'<User {self.username}>'
 class Bus:
     def __init__(self, id, bus_number, route, total_seats, available_seats, time, price):
         self.id = id

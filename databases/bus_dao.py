@@ -103,5 +103,11 @@ class BusDAO:
             WHERE id = ?
         ''', (seats_to_reverse, bus_id))
         
+        cursor.execute('SELECT available_seats FROM buses WHERE id = ?', (bus_id,))
+        available_seats = cursor.fetchone()[0]
+        
+        if available_seats == 0:
+            cursor.execute('DELETE FROM buses WHERE id = ?', (bus_id,))
+        
         conn.commit()
         conn.close()

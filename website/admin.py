@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from databases.user_dao import UserDAO
 from databases.bus_dao import BusDAO
+from flask_login import login_required
 
 admin = Blueprint('admin', __name__)
 
@@ -17,6 +18,7 @@ def check_admin():
 
 # Route for adding a bus
 @admin.route('/add_bus', methods=['GET', 'POST'])
+@login_required
 def add_bus_route():
     if request.method == 'POST':
         bus_number = request.form['bus_number']
@@ -31,6 +33,7 @@ def add_bus_route():
 
 # Route for editing a bus
 @admin.route('/edit_bus/<int:bus_id>', methods=['GET', 'POST'])
+@login_required
 def edit_bus(bus_id):
     bus = BusDAO.get_bus(bus_id)
     if bus is None:
@@ -53,6 +56,7 @@ def edit_bus(bus_id):
 
 # Route for deleting a bus
 @admin.route('/delete_bus/<int:bus_id>', methods=['POST'])
+@login_required
 def delete_bus(bus_id):
     BusDAO.delete_bus_from_db(bus_id)
     flash('Bus deleted successfully!')
@@ -60,6 +64,7 @@ def delete_bus(bus_id):
 
 # Route for managing accounts
 @admin.route('/manage_accounts', methods=['GET', 'POST'])
+@login_required
 def manage_accounts():
     if request.method == 'POST':
         action = request.form['action']

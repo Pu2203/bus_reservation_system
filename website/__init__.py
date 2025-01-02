@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from flask_login import LoginManager
 from databases.user_dao import UserDAO
 from databases.bus_dao import BusDAO
@@ -13,8 +13,11 @@ def create_app():
 
     login_manager = LoginManager()
     login_manager.init_app(app)
-    login_manager.login_view = 'auth.login'
 
+    @app.errorhandler(404)
+    def page_not_found(error):
+        return render_template('404.html')
+    
     @login_manager.user_loader
     def load_user(user_id):
         return UserDAO.get_user_by_id(user_id)
@@ -23,8 +26,8 @@ def create_app():
     from .auth import auth_bp
     from .view import view_bp
     
-    app.register_blueprint(admin, url_prefix='/admin')
-    app.register_blueprint(auth_bp, url_prefix='/auth')
+    app.register_blueprint(admin, url_prefix='/')
+    app.register_blueprint(auth_bp, url_prefix='/')
     app.register_blueprint(view_bp, url_prefix='/')
 
     return app

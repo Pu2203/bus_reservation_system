@@ -5,7 +5,13 @@
 
 {% block content %}
 <div class="container">
-    <h1>Edit Profile</h1>
+    <h1>Profile</h1>
+    <p>Username: {{ user.username }}</p>
+    <p>Email: {{ user.email }}</p>
+    <p>Phone Number: {{ user.phone_number }}</p>
+    <p>Gender: {{ user.gender }}</p>
+    <p>Balance: ${{ user.balance }}</p>
+    <p>User ID: {{ user.id }}</p>
     <form action="{{ url_for('view.profile') }}" method="POST">
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" value="{{ user.username }}" required>
@@ -17,16 +23,12 @@
         <input type="text" id="phone_number" name="phone_number" value="{{ user.phone_number }}">
         
         <label for="gender">Gender:</label>
-        <select id="gender" name="gender">
-            <option value="male" {% if user.gender == 'male' %}selected{% endif %}>Male</option>
-            <option value="female" {% if user.gender == 'female' %}selected{% endif %}>Female</option>
-        </select>
+        <input type="text" id="gender" name="gender" value="{{ user.gender }}">
         
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" value="{{ user.name }}">
         
-        <button type="submit">Save</button>
+        <button type="submit">Update Profile</button>
     </form>
-    <a href="{{ url_for('view.home') }}">Back to Home</a>
 </div>
 {% endblock %}
