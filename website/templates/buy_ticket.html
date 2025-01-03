@@ -4,32 +4,37 @@
 {% block title %}Buy Ticket{% endblock %}
 
 {% block content %}
+<head>
+    <meta charset="UTF-8">
+    <title>Buy Ticket</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
 <div class="container">
     <h1>Buy Ticket</h1>
     <form action="{{ url_for('view.buy_ticket', bus_id=bus.id) }}" method="POST">
-        <label for="customer_name">Customer Name:</label>
-        <input type="text" id="customer_name" name="customer_name" required>
-        
-        <label for="seats_reserved">Seats Reserved:</label>
-        <input type="number" id="seats_reserved" name="seats_reserved" required>
-        
-        <label for="plan">Plan:</label>
-        <select id="plan" name="plan">
-            <option value="one_time">One-Time</option>
-            <option value="block">Block</option>
-        </select>
-        
-        <button type="submit">Buy Ticket</button>
+        <div class="form-row">
+            <label for="customer_name" class="label2">Customer Name:</label>
+            <input type="text" id="customer_name" class="input" name="customer_name" required>
+        </div>
+
+        <div class="form-row">
+            <label for="seats_reserved" class="label2">Seats Reserved:</label>
+            <input type="number" id="seats_reserved" class="input" name="seats_reserved" required>
+        </div>
+
+        <div class="form-row">
+            <label for="plan" class="label2">Plan:</label>
+            <select id="plan" class="input2" name="plan" required>
+                <option value="one_time">One-Time</option>
+                <option value="block">Block</option>
+            </select>
+        </div>
+
+        <div class="form-row">
+            <button type="submit" class="button2">Buy Ticket</button>
+        </div>
     </form>
-    <a href="{{ url_for('view.view_buses_route') }}">Back to Buses</a>
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            <ul>
-            {% for message in messages %}
-                <li>{{ message }}</li>
-            {% endfor %}
-            </ul>
-        {% endif %}
-    {% endwith %}
+
+    <a href="{{ url_for('view.view_buses_route') }}" class="buttonBack">Back to Buses</a>
 </div>
 {% endblock %}

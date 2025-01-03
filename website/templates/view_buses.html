@@ -4,6 +4,7 @@
 {% block title %}View Buses{% endblock %}
 
 {% block content %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='viewbus.css') }}">
 <div class="container">
     <h1>Available Buses</h1>
     <table>
@@ -30,6 +31,9 @@
                 <td>
                     <a href="{{ url_for('view.buy_ticket', bus_id=bus.id) }}" class="button">Buy Ticket</a>
                 </td>
+                <td>
+                    <a href="{{ url_for('admin.edit_bus', bus_id=bus.id) }}" class="button">Edit Bus</a>
+                </td>  
             </tr>
             {% endfor %}
         </tbody>
