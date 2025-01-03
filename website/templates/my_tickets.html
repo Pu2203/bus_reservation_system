@@ -20,7 +20,8 @@
                 <th>QR Code</th>
                 <th>Download</th>
                 {% if current_user.username == 'admin' %}
-                <th>Actions</th>
+                <th>Scan</th>
+                <th>Delete</th>
                 {% endif %}
             </tr>
         </thead>
@@ -49,11 +50,13 @@
                 </td>
                 {% if current_user.username == 'admin' %}
                 <td>
-                    <form action="{{ url_for('admin.remove_ticket', ticket_id=ticket[0]) }}" method="POST" style="display:inline;">
-                        <button type="submit" class="buttonRed">Remove Ticket</button>
-                    </form>
                     <form action="{{ url_for('admin.update_ticket_status', ticket_id=ticket[0]) }}" method="POST" style="display:inline;">
                         <button type="submit" class="button2">Scan the Ticket</button>
+                    </form>
+                </td>
+                <td>
+                    <form action="{{ url_for('admin.remove_ticket', ticket_id=ticket[0]) }}" method="POST" style="display:inline;">
+                        <button type="submit" class="buttonRed">Remove Ticket</button>
                     </form>
                 </td>
                 {% endif %}
