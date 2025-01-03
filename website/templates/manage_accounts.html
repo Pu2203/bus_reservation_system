@@ -6,7 +6,7 @@
 {% block content %}
 <div class="container">
     <h1>Manage Accounts</h1>
-    <table>
+    <table class="tickets-table">
         <thead>
             <tr>
                 <th>ID</th>
@@ -29,14 +29,14 @@
                     <form action="{{ url_for('admin.manage_accounts') }}" method="POST" style="display:inline;">
                         <input type="hidden" name="user_id" value="{{ user.id }}">
                         <input type="hidden" name="action" value="update_balance">
-                        <input type="number" name="amount" placeholder="Amount" required>
-                        <button type="submit">Update Balance</button>
+                        <input type="number" name="amount" class="input" placeholder="Amount" required>
+                        <button type="submit" class="button2">Update Balance</button>
                     </form>
                     <form action="{{ url_for('admin.manage_accounts') }}" method="POST" style="display:inline;">
                         <input type="hidden" name="user_id" value="{{ user.id }}">
                         <input type="hidden" name="action" value="update_password">
-                        <input type="password" name="new_password" placeholder="New Password" required>
-                        <button type="submit">Update Password</button>
+                        <input type="password" name="new_password" class="input" placeholder="New Password" required>
+                        <button type="submit" class="button2">Update Password</button>
                     </form>
                 </td>
             </tr>

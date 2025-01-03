@@ -6,26 +6,25 @@
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='viewbus.css') }}">
 <div class="container">
-    <!-- Search and Sort Section -->
-    <div class="search-sort-container">
-        <!-- Search Form -->
-        <form method="POST" action="{{ url_for('view.view_buses_route') }}" class="controls">
-            <input type="text" id="search_query" name="search_query" placeholder="Search by route" class="input1" onkeyup="autocomplete()">
-            <div id="suggestions"></div>
-            <button type="submit" class="buttonBack">Search</button>
-        </form>
-
-        <!-- Sort Buttons -->
-        <form method="GET" action="{{ url_for('view.view_buses_route') }}" class="controls">
-            <label for="sort_by" class="label">Sort by:</label>
-            <select id="sort_by" name="sort_by" class="custom-dropdown" onchange="this.form.submit()">
-                <option value="" disabled {% if not sort_by %}selected{% endif %}>Select an option</option>
-                <option value="time" {% if sort_by == 'time' %}selected{% endif %}>Time</option>
-                <option value="bus_number" {% if sort_by == 'bus_number' %}selected{% endif %}>Bus Number</option>
-            </select>
-        </form>
-    </div>
-
+        <!-- Search and Sort Section -->
+        <div class="search-sort-container">
+            <!-- Search Form -->
+            <form method="POST" action="{{ url_for('view.view_buses_route') }}" class="controls">
+                <input type="text" id="search_query" name="search_query" placeholder="Search by route" class="input1" onkeyup="autocomplete()">
+                <div id="suggestions"></div>
+                <button type="submit" class="buttonBack">Search</button>
+            </form>
+    
+            <!-- Sort Buttons -->
+            <form method="GET" action="{{ url_for('view.view_buses_route') }}" class="controls">
+                <label for="sort_by" class="label">Sort by:</label>
+                <select id="sort_by" name="sort_by" class="input2" onchange="this.form.submit()">
+                    <option value="" disabled {% if not sort_by %}selected{% endif %}>Select an option</option>
+                    <option value="time" {% if sort_by == 'time' %}selected{% endif %}>Time</option>
+                    <option value="bus_number" {% if sort_by == 'bus_number' %}selected{% endif %}>Bus Number</option>
+                </select>
+            </form>
+        </div>
     <!-- Bus Containers -->
     <div class="buses-container">
         {% for bus in buses %}
@@ -33,7 +32,7 @@
             <!-- Bus Image and Number Overlay -->
             <div class="bus-image">
                 <img src="{{ url_for('static', filename='images/bus_image.jpg') }}" alt="Bus Image">
-                <div class="text-overlay">{{ bus[1] }}</div> <!-- Bus Number on image -->
+                <div class="text-overlay">{{ bus.bus_number }}</div> <!-- Bus Number on image -->
             </div>
 
             <div class="bus-info">
@@ -44,32 +43,12 @@
                 <p><strong>Price:</strong> VND {{ bus.price }}</p>
             </div>
 
-            <a href="{{ url_for('buy_ticket', view.buy_ticket) }}" class="button2">Buy Ticket</a>
-            {% if user[1] == 'admin' %}
-            <a href="{{ url_for('edit_bus', view.edit_bus) }}" class="button2">Edit</a>
+            <a href="{{ url_for('view.buy_ticket', bus_id=bus.id) }}" class="button2">Buy Ticket</a>
+            {% if current_user.username  == 'admin' %}
+            <a href="{{ url_for('admin.edit_bus', bus_id=bus.id) }}" class="button2">Edit</a>
             {% endif %}
         </div>
         {% endfor %}
     </div>
 </div>
-<script>
-    function autocomplete() {
-        const query = document.getElementById('search_query').value;
-        fetch(`/autocomplete?query=${query}`)
-            .then(response => response.json())
-            .then(data => {
-                const suggestions = document.getElementById('suggestions');
-                suggestions.innerHTML = '';
-                data.forEach(item => {
-                    const div = document.createElement('div');
-                    div.innerHTML = item;
-                    div.onclick = () => {
-                        document.getElementById('search_query').value = item;
-                        suggestions.innerHTML = '';
-                    };
-                    suggestions.appendChild(div);
-                });
-            });
-    }
-</script>
 {% endblock %}

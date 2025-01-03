@@ -1,10 +1,9 @@
 <!-- filepath: /D:/Code/bus_reservation_system/website/templates/register.html -->
-{% extends "base.html" %}
 
-{% block title %}Register{% endblock %}
 
 {% block content %}
-<div class="container">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='login.css') }}">
+<div class="login-container">
     <h1>Register</h1>
     <form action="{{ url_for('auth.register') }}" method="POST">
         <label for="username">Username:</label>
