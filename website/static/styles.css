@@ -15,8 +15,10 @@ body {
     display: flex;
     align-items: center;
     padding: 10px;
-    background-color: #dedef1b9; /* Light background for the header */
-    border-bottom: 1px solid #1c90b7b6; /* Border for the header */
+    width: 100%;
+    margin: 0;
+    background-color: #4CAF50; /* Light background for the header */
+    box-sizing: border-box;
 }
 
 .logo {
@@ -31,9 +33,48 @@ body {
 }
 
 .welcome-message {
-    font-size: 14px; /* Small characters */
-    color: #555; /* Slightly lighter gray */
+    font-size: 18px; /* Small characters */
+    font-weight: bold;
+    color: white; /* Slightly lighter gray */
     margin-left: 20px; /* Space between logo and welcome message */
+}
+
+.form-row {
+    display: flex; /* Use flexbox for alignment */
+    align-items: center; /* Vertically align label and input */
+    margin-bottom: 15px; /* Add space between rows */
+    width: 500px;
+}
+
+/* Fixed width for the search input */
+.input {
+    width: 150px; 
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+    outline: none;
+}
+
+.input:focus {
+    border-color: #45a049; 
+    box-shadow: 0 0 5px rgba(69, 160, 73, 0.5); 
+}
+
+.input2 {
+    width: 172px; 
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+    outline: none;
+}
+
+.input2:focus {
+    border-color: #45a049; 
+    box-shadow: 0 0 5px rgba(69, 160, 73, 0.5); 
 }
 
 .button-container {
@@ -45,22 +86,156 @@ body {
     padding: 10px;
     background-color: #4CAF50; /* Green background */
     color: white; /* White text */
-    border: none; /* No border */
-    border-radius: 4px; /* Rounded corners */
+    border: none; 
+    border-color: white;
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
     cursor: pointer; /* Pointer cursor on hover */
     font-size: 16px; /* Font size */
+    font-weight: bold;
+    margin-right: 10px;
     text-align: center;
     text-decoration: none; /* Remove underline */
     display: inline-block;
+    box-sizing: border-box;
 }
 
 .button:hover {
+    background-color: #45a049; 
+    border-bottom: 4px solid white;
+}
+
+.button2 {
+    padding: 10px;
+    background-color: #4CAF50; /* Green background */
+    color: white; /* White text */
+    border: none; 
+    border-color: white;
+    border-top: 1px solid transparent;
+    border-bottom: 1px solid transparent;
+    border-radius: 4px;
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 14px; /* Font size */
+    font-weight: bold;
+    margin-right: 10px;
+    text-align: center;
+    text-decoration: none; /* Remove underline */
+    display: inline-block;
+    box-sizing: border-box;
+}
+
+.button2:hover {
     background-color: #45a049; /* Darker green on hover */
 }
+
+.buttonBack {
+    padding: 10px;
+    background-color: white; /* Green background */
+    color: black; /* White text */
+    border: none; 
+    border-color: white;
+    border-top: 1px solid transparent;
+    border-bottom: 1px solid transparent;
+    border-radius: 4px;
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 14px; /* Font size */
+    font-weight: bold;
+    margin-right: 10px;
+    text-align: center;
+    text-decoration: none; /* Remove underline */
+    display: inline-block;
+    box-sizing: border-box;
+}
+
+.buttonBack:hover {
+    background-color: #C4C4C4;
+}
+
+.buttonRed {
+    padding: 10px;
+    background-color: #cc1e1e; /* Green background */
+    color: white; /* White text */
+    border: none; 
+    border-color: white;
+    border-top: 1px solid transparent;
+    border-bottom: 1px solid transparent;
+    border-radius: 4px;
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 14px; /* Font size */
+    font-weight: bold;
+    margin-right: 10px;
+    text-align: center;
+    text-decoration: none; /* Remove underline */
+    display: inline-block;
+    box-sizing: border-box;
+}
+
+.buttonRed:hover {
+    background-color: #d65454;
+}
+
 
 .content {
     padding: 20px;
 }
+
+.label2 {
+    font-size: 16px; /* Adjust font size */
+    font-weight: bold; /* Make text bold */
+    color: #333; /* Text color */
+    width: 150px; /* Fixed width to align inputs */
+    text-align: left ; /* Right-align the label */
+    margin-right: 10px; /* Add space between label and input */
+}
+
+
+.container {
+    margin: 20px auto;
+    padding: 20px;
+    max-width: 1300px;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+h1 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.tickets-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 16px;
+    text-align: left;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+.tickets-table th, .tickets-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+}
+
+.tickets-table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+.tickets-table tr {
+    background-color: #fff; /* Default white background */
+}
+
+.tickets-table tr:hover {
+    background-color: #f1f1f1; /* Light gray background on hover */
+}
+
+.tickets-table img {
+    display: block;
+    margin: auto;
+}
+
+
 
 .home-image {
     width: 100%;
