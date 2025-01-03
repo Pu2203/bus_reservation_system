@@ -109,7 +109,8 @@ def buy_ticket(bus_id):
         return redirect(url_for('view.view_buses_route'))
     
     if request.method == 'POST':
-        customer_name = user.username  # Use the username instead of customer_name from the form
+        username = current_user.username
+        customer_name = str(request.form['customer_name'])  # Use the username instead of customer_name from the form
         seats_reserved = int(request.form['seats_reserved'])
         plan = request.form['plan']
         
@@ -122,7 +123,7 @@ def buy_ticket(bus_id):
             flash('Not enough balance to buy the ticket!')
             return redirect(url_for('view.buy_ticket', bus_id=bus_id))
         
-        if ReservationDAO.make_reservation(bus_id, customer_name, seats_reserved, plan):
+        if ReservationDAO.make_reservation(bus_id, username, customer_name, seats_reserved, plan):
             UserDAO.update_balance(current_user.id, -total_price)  # Reduce the user's balance
             user = UserDAO.get_user_by_id(user_id)
             flash('Ticket purchased successfully!')
@@ -172,7 +173,7 @@ def my_tickets():
 @login_required
 def profile():
     user_id = session.get('user_id')
-    user = UserDAO.get_user_by_id(user_id)
+    user = UserDAO.get_user_by_id(current_user.id)
     
     if request.method == 'POST':
         username = request.form['username']

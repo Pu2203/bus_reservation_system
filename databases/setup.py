@@ -33,6 +33,7 @@ def setup_database():
         CREATE TABLE IF NOT EXISTS tickets (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             bus_id INTEGER,
+            username TEXT NOT NULL,
             customer_name TEXT NOT NULL,
             seats_reserved INTEGER NOT NULL,
             plan TEXT NOT NULL,

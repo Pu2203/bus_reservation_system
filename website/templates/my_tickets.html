@@ -9,9 +9,10 @@
     <table class="tickets-table">
         <thead>
             <tr>
-                <th>Reservation ID</th>
+                <th>Ticket ID</th>
                 <th>Bus Number</th>
                 <th>Route</th>
+                <th>Username</th>
                 <th>Customer Name</th>
                 <th>Seats Reserved</th>
                 <th>Time</th>
@@ -34,19 +35,20 @@
                 <td>{{ ticket[3] }}</td>
                 <td>{{ ticket[4] }}</td>
                 <td>{{ ticket[5] }}</td>
+                <td>{{ ticket[6] }}</td>
                 <td>
-                    {% if ticket[7] == 'block' %}
+                    {% if ticket[8] == 'block' %}
                         $150
                     {% else %}
-                        ${{ ticket[4] * ticket[6] }}
+                        ${{ ticket[5] * ticket[7] }}
                     {% endif %}
                 </td>
-                <td>{{ ticket[8] }}</td>
+                <td>{{ ticket[9] }}</td>
                 <td>
-                    <img src="{{ url_for('view.generate_qr_code', bus_id=ticket[0], customer_name=ticket[3], seats_reserved=ticket[4]) }}" alt="QR Code" width="100" height="100">
+                    <img src="{{ url_for('view.generate_qr_code', bus_id=ticket[0], customer_name=ticket[4], seats_reserved=ticket[5]) }}" alt="QR Code" width="100" height="100">
                 </td>
                 <td>
-                    <a href="{{ url_for('view.generate_qr_code', bus_id=ticket[0], customer_name=ticket[3], seats_reserved=ticket[4]) }}" download="ticket_qr.png" class="button2">Download QR</a>
+                    <a href="{{ url_for('view.generate_qr_code', bus_id=ticket[0], customer_name=ticket[4], seats_reserved=ticket[5]) }}" download="ticket_qr.png" class="button2">Download QR</a>
                 </td>
                 {% if current_user.username == 'admin' %}
                 <td>

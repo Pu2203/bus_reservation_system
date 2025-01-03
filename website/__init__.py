@@ -11,8 +11,6 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///bus_reservation.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     
-    setup_database()
-    
     login_manager = LoginManager()
     login_manager.init_app(app)
 
