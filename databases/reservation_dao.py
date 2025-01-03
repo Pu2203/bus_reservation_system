@@ -2,7 +2,7 @@ import sqlite3
 
 class ReservationDAO:
     @staticmethod
-    def make_reservation(bus_id, customer_name, seats_reserved, plan):
+    def make_reservation(bus_id, username, customer_name, seats_reserved, plan):
         conn = sqlite3.connect('bus_reservation.db')
         cursor = conn.cursor()
         
@@ -14,9 +14,9 @@ class ReservationDAO:
             return False
         
         cursor.execute('''
-            INSERT INTO tickets (bus_id, customer_name, seats_reserved, plan, status)
-            VALUES (?, ?, ?, ?, 'Pending')
-        ''', (bus_id, customer_name, seats_reserved, plan))
+            INSERT INTO tickets (bus_id, username, customer_name, seats_reserved, plan, status)
+            VALUES (?, ?, ?, ?, ?, 'Pending')
+        ''', (bus_id, username, customer_name, seats_reserved, plan))
         
         cursor.execute('''
             UPDATE buses
@@ -38,16 +38,18 @@ class ReservationDAO:
         
         if is_admin:
             cursor.execute('''
-                SELECT tickets.id, buses.bus_number, buses.route, tickets.customer_name, tickets.seats_reserved, buses.time, buses.price, tickets.plan, tickets.status
+                SELECT tickets.id, buses.bus_number, buses.route, tickets.username, tickets.customer_name, tickets.seats_reserved, buses.time, buses.price, tickets.plan, tickets.status
                 FROM tickets
                 JOIN buses ON tickets.bus_id = buses.id
+                JOIN users ON tickets.username = users.username
             ''')
         else:
             cursor.execute('''
-                SELECT tickets.id, buses.bus_number, buses.route, tickets.customer_name, tickets.seats_reserved, buses.time, buses.price, tickets.plan, tickets.status
+                SELECT tickets.id, buses.bus_number, buses.route, tickets.username, tickets.customer_name, tickets.seats_reserved, buses.time, buses.price, tickets.plan, tickets.status
                 FROM tickets
                 JOIN buses ON tickets.bus_id = buses.id
-                WHERE tickets.customer_name = ?
+                JOIN users ON tickets.username = users.username
+                WHERE tickets.username = ?
             ''', (username,))
         
         tickets = cursor.fetchall()

@@ -14,7 +14,7 @@
         <div class="header-content">
             <div class="welcome-message">
                 {% if current_user.is_authenticated %}
-                    <p>Welcome {{ current_user.username }}!</p>
+                    <p>Welcome {{ current_user.name }}!</p>
                     <p>Balance: ${{ current_user.balance }}</p>
                 {% else %}
                     <p><strong>Welcome to the Bus Reservation System</strong></p>
