@@ -4,16 +4,16 @@ from website.models import User
 
 class UserDAO:
     @staticmethod
-    def add_user(username, password, email=None, phone_number=None, gender=None):
+    def add_user(username, password, name, phone_number, email=None, gender=None):
         conn = sqlite3.connect('bus_reservation.db')
         cursor = conn.cursor()
         
         password_hash = generate_password_hash(password)
         
         cursor.execute('''
-            INSERT INTO users (username, password_hash, email, phone_number, gender)
-            VALUES (?, ?, ?, ?, ?)
-        ''', (username, password_hash, email, phone_number, gender))
+            INSERT INTO users (username, password_hash, name, email, phone_number, gender)
+            VALUES (?, ?, ?, ?, ?, ?)
+        ''', (username, password_hash, name, email, phone_number, gender))
         
         conn.commit()
         conn.close()

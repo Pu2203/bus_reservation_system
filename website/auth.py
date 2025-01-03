@@ -16,6 +16,8 @@ def load_user(user_id):
 def register():
     if request.method == 'POST':
         username = request.form['username']
+        name = request.form['name']
+        phone_number = request.form['phone_number']
         password = request.form['password']
         confirm_password = request.form['confirm_password']
         
@@ -40,7 +42,7 @@ def register():
             return redirect(url_for('auth.register'))
 
         # Create a new user
-        UserDAO.add_user(username, password)
+        UserDAO.add_user(username, password, name, phone_number)
         flash('Registration successful! You can now log in.')
         return redirect(url_for('auth.login'))
 
